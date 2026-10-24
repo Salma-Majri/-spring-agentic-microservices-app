@@ -1,21 +1,20 @@
 package ma.majrisalma.ebankservice.services;
 
-import ma.majrisalma.customerservice.repository.CustomerRepository;
+import ma.majrisalma.customerservice.entities.Customer;
+import ma.majrisalma.ebankservice.feign.CustomerRestClient;
 import ma.majrisalma.ebankservice.entities.BankAccount;
 import ma.majrisalma.ebankservice.repository.BankAccountRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
 @Service
 public class EbankService {
     private final BankAccountRepository accountRepository;
-    public EbankService(BankAccountRepository accountRepository) {
+    private final CustomerRestClient customerRestClient;
+    public EbankService(BankAccountRepository accountRepository, CustomerRestClient customerRestClient, CustomerRestClient customerRestClient1) {
         this.accountRepository = accountRepository;
+        this.customerRestClient = customerRestClient1;
     }
 
     public List<BankAccount> getAllBankAccounts(){
@@ -23,8 +22,11 @@ public class EbankService {
     }
 
     public BankAccount getBankAccountById(String id){
-        return accountRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Account not found"));
+        BankAccount bankAccount = accountRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+        Customer customer = customerRestClient.getCustomerById(bankAccount.getCustomerId());
+        bankAccount.setCustomer(customer);
+        return bankAccount;
     }
 
     public BankAccount save(BankAccount bankAccount){
