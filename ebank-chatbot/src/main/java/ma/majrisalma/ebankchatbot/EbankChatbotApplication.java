@@ -1,13 +1,13 @@
-package ma.majrisalma.ebankchatboot;
+package ma.majrisalma.ebankchatbot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EbankChatbootApplication {
+public class EbankChatbotApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EbankChatbootApplication.class, args);
+        SpringApplication.run(EbankChatbotApplication.class, args);
     }
 
 }
