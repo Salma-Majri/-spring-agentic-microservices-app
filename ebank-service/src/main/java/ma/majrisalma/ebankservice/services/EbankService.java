@@ -4,6 +4,8 @@ import ma.majrisalma.customerservice.entities.Customer;
 import ma.majrisalma.ebankservice.feign.CustomerRestClient;
 import ma.majrisalma.ebankservice.entities.BankAccount;
 import ma.majrisalma.ebankservice.repository.BankAccountRepository;
+import org.springframework.ai.mcp.annotation.McpTool;
+import org.springframework.ai.mcp.annotation.McpToolParam;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,16 +14,19 @@ import java.util.List;
 public class EbankService {
     private final BankAccountRepository accountRepository;
     private final CustomerRestClient customerRestClient;
-    public EbankService(BankAccountRepository accountRepository, CustomerRestClient customerRestClient, CustomerRestClient customerRestClient1) {
+
+    public EbankService(BankAccountRepository accountRepository, CustomerRestClient customerRestClient) {
         this.accountRepository = accountRepository;
-        this.customerRestClient = customerRestClient1;
+        this.customerRestClient = customerRestClient;
     }
 
+    @McpTool(description = "Get all bank accounts")
     public List<BankAccount> getAllBankAccounts(){
         return accountRepository.findAll();
     }
 
-    public BankAccount getBankAccountById(String id){
+    @McpTool(description = "Get a bank account by its ID including customer details")
+    public BankAccount getBankAccountById(@McpToolParam(description = "The bank account id") String id){
         BankAccount bankAccount = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
         Customer customer = customerRestClient.getCustomerById(bankAccount.getCustomerId());
@@ -29,7 +34,8 @@ public class EbankService {
         return bankAccount;
     }
 
-    public BankAccount save(BankAccount bankAccount){
+    @McpTool(description = "Save a new bank account")
+    public BankAccount save(@McpToolParam(description = "The bank account to save") BankAccount bankAccount){
         return accountRepository.save(bankAccount);
     }
 }
