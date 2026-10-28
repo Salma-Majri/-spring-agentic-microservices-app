@@ -3,6 +3,7 @@ package ma.majrisalma.ebankchatbot.agents;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +31,5 @@ public class EbankAIAgent {
                 .call()
                 .content();
     }
+
 }
