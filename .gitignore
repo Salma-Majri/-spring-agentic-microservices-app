@@ -1,0 +1,11 @@
+# Angular / Frontend
+/ebank-frontend/node_modules/
+/ebank-frontend/.angular/
+/ebank-frontend/dist/
+
+# Spring Boot / Backend (Maven / IntelliJ)
+/ebank-ms-application/target/
+.idea/
+*.iml
+.DS_Store
+*.log
